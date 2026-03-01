@@ -1,7 +1,6 @@
 import pygame
 import random
 import config
-import brain
 
 class Player:
     def __init__(self):
@@ -16,10 +15,7 @@ class Player:
 
         #AI
         self.decision=None
-        self.vision=[0.5,1,0.5]
-        self.inputs=3
-        self.brain=brain.Brain(self.inputs)
-        self.brain.generate_net()
+
 
     #Game related functions
     def draw(self,widow):
@@ -54,41 +50,10 @@ class Player:
             self.vel=-5
         if self.vel >=3:
             self.flap = False
-    @staticmethod
-    def closest_pipe():
-        for p in config.pips:
-            if not p.passed:
-                return p
-
-
 
     # AI shenanigans
-
-    def look(self):
-        if config.pips:
-
-            #line to top pipe
-            self.vision[0]=max(0,self.rect.center[1]-self.closest_pipe().top_rect.bottom) / 500
-
-            #line to mid-pipe
-            self.vision[1]=max(0,self.closest_pipe().x - self.rect.center[0]) / 500
-
-            #line to bottom pipe
-            self.vision[2]=max(0,self.closest_pipe().bottom_rect.top-self.rect.center[1]) / 500
-
-            # Draw line for visuals
-            #top line
-            pygame.draw.line(config.window, self.color, self.rect.center,
-                             (self.rect.center[0], config.pips[0].top_rect.bottom))
-            #mid-line
-            pygame.draw.line(config.window, self.color, self.rect.center,(config.pips[0].x,self.rect.center[1]))
-
-            #bottom line
-            pygame.draw.line(config.window, self.color, self.rect.center,
-                             (self.rect.center[0], config.pips[0].bottom_rect.top))
-
     def think(self):
-        self.decision=self.brain.feed_forward(self.vision)
+        self.decision= random.uniform(0,1)
         if self.decision>.73:
             self.bird_flap()
 
