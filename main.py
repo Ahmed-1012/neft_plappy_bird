@@ -7,7 +7,11 @@ import population
 
 pygame.init()
 clock = pygame.time.Clock()
-population = population.Population(1000)
+
+population_size=500
+components.Pipes.width=15
+components.Pipes.opening=70
+population = population.Population(population_size)
 
 def generate_pipes():
     config.pips.append(components.Pipes(config.win_width))
@@ -30,7 +34,7 @@ def main():
         #spawn pipes
         if pipes_spawn_time <= 0:
             generate_pipes()
-            pipes_spawn_time =200
+            pipes_spawn_time=200
         pipes_spawn_time -= 1
 
         for pipe in config.pips:
