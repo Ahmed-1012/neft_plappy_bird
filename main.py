@@ -5,7 +5,6 @@ import components
 import population
 
 
-
 pygame.init()
 clock = pygame.time.Clock()
 population = population.Population()
@@ -42,4 +41,6 @@ def main():
         population.update_live_players()
         clock.tick(60)
         pygame.display.flip()
+
+
 main()
