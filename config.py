@@ -1,4 +1,6 @@
 import pygame
-winWidth = 720
-winHeight = 550
-window=pygame.display.set_mode((winWidth,winHeight))
+import components
+win_width = 550
+win_height = 720
+window=pygame.display.set_mode((win_width,win_height))
+ground = components.Ground(win_width)
