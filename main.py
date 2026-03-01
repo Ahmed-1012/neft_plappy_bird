@@ -8,10 +8,8 @@ import population
 pygame.init()
 clock = pygame.time.Clock()
 
-population_size=500
-components.Pipes.width=15
-components.Pipes.opening=70
-population = population.Population(population_size)
+
+population = population.Population(config.population_size)
 
 def generate_pipes():
     config.pips.append(components.Pipes(config.win_width))
@@ -45,7 +43,8 @@ def main():
         if not population.extinct():
             population.update_live_players()
         else:
-            pass
+            config.pips.clear()
+            population.natural_selection()
         clock.tick(60)
         pygame.display.flip()
 

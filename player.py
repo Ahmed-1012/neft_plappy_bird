@@ -13,11 +13,13 @@ class Player:
         self.vel=0
         self.flap = False
         self.alive = True
+        self.lifespan=0
 
         #AI
         self.decision=None
         self.vision=[0.5,1,0.5]
         self.inputs=3
+        self.fitness=0
         self.brain=brain.Brain(self.inputs)
         self.brain.generate_net()
 
@@ -43,6 +45,8 @@ class Player:
             self.rect.y += self.vel
             if self.vel>5:
                 self.vel=5
+            #increment lifespan
+            self.lifespan+=1
         else:
             self.vel=0
             self.alive = False
@@ -79,16 +83,27 @@ class Player:
             # Draw line for visuals
             #top line
             pygame.draw.line(config.window, self.color, self.rect.center,
-                             (self.rect.center[0], config.pips[0].top_rect.bottom))
+                             (self.rect.center[0], config.pips[0].top_rect.bottom),2)
             #mid-line
-            pygame.draw.line(config.window, self.color, self.rect.center,(config.pips[0].x,self.rect.center[1]))
+            pygame.draw.line(config.window, self.color, self.rect.center,(config.pips[0].x,self.rect.center[1]),2)
 
             #bottom line
             pygame.draw.line(config.window, self.color, self.rect.center,
-                             (self.rect.center[0], config.pips[0].bottom_rect.top))
+                             (self.rect.center[0], config.pips[0].bottom_rect.top),2)
 
     def think(self):
         self.decision=self.brain.feed_forward(self.vision)
         if self.decision>.73:
             self.bird_flap()
 
+
+
+    def calculate_fitness(self):
+        self.fitness=self.lifespan
+
+    def clone(self):
+        clone=Player()
+        clone.fitness=self.fitness
+        clone.brain=self.brain.clone()
+        clone.brain.generate_net()
+        return clone
