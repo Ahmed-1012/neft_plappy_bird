@@ -9,6 +9,7 @@ class Species:
         self.players.append(player)
         self.bench_mark_fitness = player.fitness
         self.bench_mark_brain = player.brain.clone()
+        self.staleness = 0
         self.champion = player.clone()
 
     def similarity(self,brain):
@@ -32,8 +33,11 @@ class Species:
     def sort_players_by_fitness(self):
         self.players.sort(key=operator.attrgetter('fitness'),reverse=True)
         if self.players[0].fitness > self.bench_mark_fitness:
+            self.staleness=0
             self.bench_mark_fitness = self.players[0].fitness
             self.champion.fitness = self.players[0].clone()
+        else:
+            self.staleness+=1
 
     def calculate_average_fitness(self):
         total_fitness = 0

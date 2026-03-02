@@ -31,6 +31,12 @@ class Population:
         print("calculate fitness")
         self.calculate_fitness()
 
+        print("kill extent")
+        self.kill_extent_species()
+
+        print("kill stale")
+        self.kill_stale_species()
+
         print("sort py fitness")
         self.sort_species_by_fitness()
 
@@ -51,6 +57,30 @@ class Population:
             if not add_to_species:
                  self.species.append(species.Species(p))
 
+    def kill_extent_species(self):
+        species_bin=[]
+        for s in self.species:
+            if len(s.players)==0:
+                species_bin.append(s)
+        for s in species_bin:
+            self.species.remove(s)
+
+    def kill_stale_species(self):
+        players_bin=[]
+        species_bin=[]
+        for s in self.species:
+            if s.staleness>=8:
+                if len(self.species)>len(species_bin)+1:
+                    species_bin.append(s)
+                    for p in s.players:
+                        players_bin.append(p)
+                else:
+                    s.staleness=0
+        for p in players_bin:
+            self.players.remove(p)
+
+        for s in species_bin:
+            self.species.remove(s)
 
     def calculate_fitness(self):
         for p in self.players:
